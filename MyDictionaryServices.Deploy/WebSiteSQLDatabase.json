@@ -1,0 +1,224 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "MyDictionaryPlanName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "MyDictionaryPlanSKU": {
+      "type": "string",
+      "allowedValues": [
+        "Free",
+        "Shared",
+        "Basic",
+        "Standard"
+      ],
+      "defaultValue": "Free"
+    },
+    "MyDictionaryPlanWorkerSize": {
+      "type": "string",
+      "allowedValues": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "defaultValue": "0"
+    },
+    "MyDictionaryAppAdminLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "MyDictionaryAppAdminLoginPassword": {
+      "type": "securestring"
+    },
+    "my-dictionary-app-profilesName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "my-dictionary-app-profilesCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "my-dictionary-app-profilesEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "my-dictionary-app-profilesRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    },
+    "profilesStorageType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_ZRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ]
+    }
+  },
+  "variables": {
+    "MyDictionaryAppName": "[concat('MyDictionaryApp', uniqueString(resourceGroup().id))]",
+    "my-dictionary-app-profilesName": "[concat('my-dictionary-app-profiles', uniqueString(resourceGroup().id))]",
+    "profilesStorageName": "[concat('prof', uniqueString(resourceGroup().id))]"
+  },
+  "resources": [
+    {
+      "name": "[parameters('MyDictionaryPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2014-06-01",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "MyDictionaryPlan"
+      },
+      "properties": {
+        "name": "[parameters('MyDictionaryPlanName')]",
+        "sku": "[parameters('MyDictionaryPlanSKU')]",
+        "workerSize": "[parameters('MyDictionaryPlanWorkerSize')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('MyDictionaryAppName')]",
+      "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "MyDictionaryApp"
+      },
+      "properties": {
+        "administratorLogin": "[parameters('MyDictionaryAppAdminLogin')]",
+        "administratorLoginPassword": "[parameters('MyDictionaryAppAdminLoginPassword')]"
+      },
+      "resources": [
+        {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('MyDictionaryAppName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "255.255.255.255"
+          }
+        },
+        {
+          "name": "[parameters('my-dictionary-app-profilesName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('MyDictionaryAppName'))]"
+          ],
+          "tags": {
+            "displayName": "my-dictionary-app-profiles"
+          },
+          "properties": {
+            "collation": "[parameters('my-dictionary-app-profilesCollation')]",
+            "edition": "[parameters('my-dictionary-app-profilesEdition')]",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "[parameters('my-dictionary-app-profilesRequestedServiceObjectiveName')]"
+          }
+        }
+      ]
+    },
+    {
+      "name": "[variables('my-dictionary-app-profilesName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('MyDictionaryPlanName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('MyDictionaryPlanName')))]": "Resource",
+        "displayName": "my-dictionary-app-profiles"
+      },
+      "properties": {
+        "name": "[variables('my-dictionary-app-profilesName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('MyDictionaryPlanName'))]"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('my-dictionary-app-profilesName'))]"
+          ],
+          "tags": {
+            "displayName": "my-dictionary-app-profiles-settings"
+          },
+          "properties": {
+            "ConnectionStrings:DefaultConnection": "[concat('Server=tcp:', reference(concat('Microsoft.Sql/servers/', variables('MyDictionaryAppName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('my-dictionary-app-profilesName'), ';User Id=', parameters('MyDictionaryAppAdminLogin'),  ';Password=', parameters('MyDictionaryAppAdminLoginPassword'), ';')]",
+            "ConnectionStrings:avatarBlob": "[concat('DefaultEndpointsProtocol=https;Account Name=', variables('profilesStorageName'), ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('profilesStorageName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
+            "AvatarsUrl": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('profilesStorageName')), '2016-01-01').primaryEndpoints.blob, 'avatar-output/')]"
+          }
+
+        }
+      ]
+    },
+    {
+      "name": "[variables('profilesStorageName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "profilesStorage"
+      },
+      "properties": {
+        "accountType": "[parameters('profilesStorageType')]"
+      }
+    }
+  ],
+  "outputs": {
+    "profilesWebAppName": {
+      "type": "string",
+      "value": "[variables('my-dictionary-app-profilesName')]"
+    },
+    "dbServer": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.Sql/servers/', variables('MyDictionaryAppName'))).fullyQualifiedDomainName]"
+    },
+    "dbLogin": {
+      "type": "string",
+      "value": "[parameters('MyDictionaryAppAdminLogin')]"
+    },
+    "dbPassword": {
+      "type": "string",
+      "value": "[parameters('MyDictionaryAppAdminLoginPassword')]"
+    },
+    "dbProfilesName": {
+      "type": "string",
+      "value": "[parameters('my-dictionary-app-profilesName')]"
+    }
+  }
+}

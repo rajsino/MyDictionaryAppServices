@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDictionaryServices", "MyDictionaryServices\MyDictionaryServices.csproj", "{5E374780-924E-4604-BC98-1C5B97779BC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDictionaryServices.Core", "MyDictionaryServices.Core\MyDictionaryServices.Core.csproj", "{6F149B86-B7FE-466D-B57A-A35E1223A18E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDictionaryServices.Models", "MyDictionaryServices.Models\MyDictionaryServices.Models.csproj", "{47CAA391-4185-41AF-B5C0-60F4D7F7FBE5}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MyDictionaryServices.Database", "MyDictionaryServices.Database\MyDictionaryServices.Database.sqlproj", "{177B5B1D-CB9B-4075-A656-26ABCF0BF987}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDictionaryServices.Security", "MyDictionaryServices.Security\MyDictionaryServices.Security.csproj", "{354B7A14-A88E-46B6-901E-97E07469D075}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "MyDictionaryServices.Deploy", "MyDictionaryServices.Deploy\MyDictionaryServices.Deploy.deployproj", "{61046DEB-EDDB-46B1-B0DD-9032AB6A700B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E374780-924E-4604-BC98-1C5B97779BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E374780-924E-4604-BC98-1C5B97779BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E374780-924E-4604-BC98-1C5B97779BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E374780-924E-4604-BC98-1C5B97779BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F149B86-B7FE-466D-B57A-A35E1223A18E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F149B86-B7FE-466D-B57A-A35E1223A18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F149B86-B7FE-466D-B57A-A35E1223A18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F149B86-B7FE-466D-B57A-A35E1223A18E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47CAA391-4185-41AF-B5C0-60F4D7F7FBE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47CAA391-4185-41AF-B5C0-60F4D7F7FBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47CAA391-4185-41AF-B5C0-60F4D7F7FBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47CAA391-4185-41AF-B5C0-60F4D7F7FBE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{177B5B1D-CB9B-4075-A656-26ABCF0BF987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{177B5B1D-CB9B-4075-A656-26ABCF0BF987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{177B5B1D-CB9B-4075-A656-26ABCF0BF987}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{177B5B1D-CB9B-4075-A656-26ABCF0BF987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{177B5B1D-CB9B-4075-A656-26ABCF0BF987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{177B5B1D-CB9B-4075-A656-26ABCF0BF987}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{354B7A14-A88E-46B6-901E-97E07469D075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{354B7A14-A88E-46B6-901E-97E07469D075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{354B7A14-A88E-46B6-901E-97E07469D075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{354B7A14-A88E-46B6-901E-97E07469D075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61046DEB-EDDB-46B1-B0DD-9032AB6A700B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61046DEB-EDDB-46B1-B0DD-9032AB6A700B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61046DEB-EDDB-46B1-B0DD-9032AB6A700B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61046DEB-EDDB-46B1-B0DD-9032AB6A700B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
