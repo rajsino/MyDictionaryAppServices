@@ -1,6 +1,5 @@
 ﻿using MyDictionaryServices.Models.PrepareTest;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MyDictionaryServices.Queries.PrepareTest
 {

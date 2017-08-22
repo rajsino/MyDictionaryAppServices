@@ -1,7 +1,6 @@
 ﻿using MyDictionaryServices.Data.Profiles;
 using MyDictionaryServices.Models.PrepareTest;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
 
 namespace MyDictionaryServices.Queries.PrepareTest
@@ -17,10 +16,7 @@ namespace MyDictionaryServices.Queries.PrepareTest
 
         public IEnumerable<TestResults> GetAllAsync(bool isRecent, int userId)
         {
-            var data = _ctx.TestResults.
-                Skip(0).
-                Take(100).ToList();
-
+            var data = _ctx.TestResults.Where(e => e.Id == userId).OrderByDescending(e => e.Id).ToList<TestResults>();
             return data;
         }
 
