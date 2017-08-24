@@ -52,9 +52,9 @@ namespace MyDictionaryServices.Controllers
             var command = new DeleteTestResultsCommand(userid);
             return ProcessCommand(command);
         }
-
-        [HttpGet()]
-        public IActionResult GetAll(bool isRecent, int userid)
+        
+        [HttpGet("{id:int}/testresults")]
+        public IActionResult GetAll(int userid)
         {
             var count = _queries.CountAsync();
             var testResults = _queries.GetAllAsync(true, userid);

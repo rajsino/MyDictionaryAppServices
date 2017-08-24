@@ -52,5 +52,13 @@ namespace MyDictionaryServices.Controllers
             var command = new DeleteProfileCommand(userid);
             return ProcessCommand(command);
         }
+
+        [Route("{userid:int}")]
+        [HttpGet()]
+        public IActionResult GetProfileByUserId(int userid)
+        {
+            var profile = _queries.GetByUserId(userid);
+            return Ok(profile);
+        }
     }
 }
